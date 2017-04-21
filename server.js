@@ -5,11 +5,23 @@ var server = require('http').Server(app);
 var io = require('socket.io').listen(server);
 //Cargando libreria para manejar arduino firmata
 var five = require("johnny-five");
-var board = new five.Board();
+
+
+
+try {
+  var board = new five.Board({
+    port:"COM3"}//Se puede seleccionar otro puerto
+);
+} catch (err) {
+  console.log(err)
+}
+
+
+
 
 //=============================================
 
-//Levanto servidor en puerto 8000
+//Levanto servidor en puerto 4000
 server.listen(4000, function () {
   console.log("Servidor levantado");
 });
@@ -28,10 +40,11 @@ app.get('/', function (req, res) {
 //==============================================
 
 
+try {
 board.on("ready", function () {
   console.log("Arduino conectado");
   console.log("==================================");
-  // Create an Led on pin 13 
+  // Creando led
   var led1 = new five.Led(13);
   var led2 = new five.Led(12);
   var led3 = new five.Led(11);
@@ -57,8 +70,9 @@ board.on("ready", function () {
       console.log(data);
       switch (data) {
         case 'true btn1':
+
           led1.on();
-          console.log('led 1 activo');
+          console.log('led');
           break;
         case 'true btn2':
           led2.on();
@@ -67,6 +81,10 @@ board.on("ready", function () {
         case 'true btn3':
           led3.on();
           console.log('led 3 activo');
+          break;
+        case 'true btn4':
+          led4.on();
+          console.log('led 4 activo');
           break;
         case 'false btn1':
           led1.off();
@@ -79,6 +97,10 @@ board.on("ready", function () {
         case 'false btn3':
           led3.off();
           console.log('led 3 desactivo');
+          break;
+        case 'false btn4':
+          led4.off();
+          console.log('led 4 desactivo');
           break;
 
         default:
@@ -97,6 +119,11 @@ board.on("ready", function () {
   });
 
 });
+
+} catch (err) {
+console.log(err)
+}
+
 
 
 //=============================================

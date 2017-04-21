@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Sasha</title>
+  <title>DomoChile</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="/socket.io/socket.io.js"></script>
 
@@ -25,35 +25,72 @@
       -webkit-transition: none;
     }
   </style>
+  <nav class="navbar navbar-inverse" role="navigation">
 
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+      <span class="sr-only">Desplegar navegaci�n</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+      <a class="navbar-brand" href="#">Domochile</a>
+    </div>
+
+
+    <div class="collapse navbar-collapse navbar-ex1-collapse">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="https://www.allinchile.cl/">Allinchile</a></li>
+
+      </ul>
+    </div>
+  </nav>
 </head>
 
 <body>
-  <div class="container-fluid">
-    <div class="row">
-      <div class="text-center">
-        <h1><span id="dyn">Server</span> operativo!!!</h1>
-
-        <label id="bt1" class="checkbox-inline">
-                  <input id="btn1" type="checkbox"  data-toggle="toggle"  data-onstyle="success" data-offstyle="danger" data-width="100" data-height="75" data-style="slow"> Habitacion
-                </label>
-        <label id="bt2" class="checkbox-inline">
-                  <input id="btn2" type="checkbox" data-toggle="toggle" data-on="Encendido" data-off="Apagado" data-onstyle="success" data-offstyle="danger" data-width="100" data-height="75" data-style="slow"> Living
-                </label>
-        <label id="bt3" class="checkbox-inline">
-                  <input id="btn3" type="checkbox" data-toggle="toggle" data-on="Encendido" data-off="Apagado" data-onstyle="success" data-offstyle="danger" data-width="100" data-height="75" data-style="slow"> Baño
-                </label>
-      </div>
-      <ul id="messages"></ul>
-      <div id="console-event"></div>
-    </div>
-
+  <div class="jumbotron text-center">
+    <h1>Domochile</h1>
+    <p>A veces cuando se innova, se cometen errores. Es mejor admitirlo rapidamente y continuar con otras innovaciones.- Steve
+      jobs
+    </p>
   </div>
 
-  <div id="console-event"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-4">
+        <h3>Fluorecente</h3>
+        <p><label id="bt1" class="checkbox-inline">
+                  <input id="btn1" type="checkbox"  data-toggle="toggle" data-on="Encendido" data-off="Apagado" data-onstyle="success" data-offstyle="danger" data-width="100" data-height="25" data-style="slow"></label></p>
+
+      </div>
+      <div class="col-sm-4">
+        <h3>Pasillo</h3>
+        <p><label id="bt2" class="checkbox-inline">
+                  <input id="btn2" type="checkbox" data-toggle="toggle" data-on="Encendido" data-off="Apagado" data-onstyle="success" data-offstyle="danger" data-width="100" data-height="25" data-style="slow">
+                </label></p>
+
+      </div>
+      <div class="col-sm-4">
+        <h3>Baño</h3>
+        <p><label id="bt3" class="checkbox-inline">
+                  <input id="btn3" type="checkbox" data-toggle="toggle" data-on="Encendido" data-off="Apagado" data-onstyle="success" data-offstyle="danger" data-width="100" data-height="25" data-style="slow">
+                </label></p>
+
+      </div>
+      <div class="col-sm-4">
+        <h3>Foco</h3>
+        <p><label id="bt4" class="checkbox-inline">
+                  <input id="btn4" type="checkbox" data-toggle="toggle" data-on="Encendido" data-off="Apagado" data-onstyle="success" data-offstyle="danger" data-width="100" data-height="25" data-style="slow">
+                </label></p>
+
+      </div>
+    </div>
+  </div>
+
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
   <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
   <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+  <script src='https://code.responsivevoice.org/responsivevoice.js'></script>
   <script>
     var socket = io();
     $(function () {
@@ -72,41 +109,57 @@
         $('#console-event').html('Toggle3: ' + $(this).prop('checked'))
         socket.emit('evento', $(this).prop('checked') + ' btn3')
       })
+      $('#btn4').change(function () {
+        $('#console-event').html('Toggle4: ' + $(this).prop('checked'))
+        socket.emit('evento', $(this).prop('checked') + ' btn4')
+      })
 
       socket.on('btn estado', function (state) {
         $('#messages').append($('<li>').text(state))
         switch (state) {
           case 'true btn1':
             if (!$('#btn1').prop('checked')) {
-              $('#btn1').bootstrapToggle('true')
+              $('#btn1').bootstrapToggle('toggle')
+              responsiveVoice.speak("encendido", "Spanish Latin American Female")
             }
 
             break;
           case 'false btn1':
             if ($('#btn1').prop('checked')) {
-              $('#btn1').bootstrapToggle('false')
+              $('#btn1').bootstrapToggle('toggle')
             }
             break;
           case 'true btn2':
             if (!$('#btn2').prop('checked')) {
-              $('#btn2').bootstrapToggle('true')
+              $('#btn2').bootstrapToggle('toggle')
             }
 
             break;
           case 'false btn2':
             if ($('#btn2').prop('checked')) {
-              $('#btn2').bootstrapToggle('false')
+              $('#btn2').bootstrapToggle('toggle')
             }
             break;
           case 'true btn3':
             if (!$('#btn3').prop('checked')) {
-              $('#btn3').bootstrapToggle('true')
+              $('#btn3').bootstrapToggle('toggle')
             }
 
             break;
           case 'false btn3':
             if ($('#btn3').prop('checked')) {
-              $('#btn3').bootstrapToggle('false')
+              $('#btn3').bootstrapToggle('toggle')
+            }
+            break;
+          case 'true btn4':
+            if (!$('#btn4').prop('checked')) {
+              $('#btn4').bootstrapToggle('toggle')
+            }
+
+            break;
+          case 'false btn4':
+            if ($('#btn4').prop('checked')) {
+              $('#btn4').bootstrapToggle('toggle')
             }
             break;
 
